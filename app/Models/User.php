@@ -22,7 +22,9 @@ class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
+        'remember_token',
         'role'
     ];
 
@@ -45,8 +47,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'role' => UserRoles::class,
+            'password'          => 'hashed',
+            'role'              => UserRoles::class,
         ];
     }
 
