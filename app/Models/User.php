@@ -7,6 +7,7 @@ use App\Enums\UserRoles;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -55,5 +56,20 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->role->value === UserRoles::ADMIN->value;
+    }
+
+    public function scopeUsers()
+    {
+        return $this->where('role', UserRoles::USER);
+    }
+
+    public function scopeAdmins()
+    {
+        return $this->where('role', UserRoles::ADMIN);
+    }
+
+    public function claims(): HasMany
+    {
+        return $this->hasMany(Claim::class);
     }
 }
