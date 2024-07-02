@@ -58,9 +58,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->role->value === UserRoles::ADMIN->value;
     }
 
-    public function scopeUsers()
+    public function scopeCommons()
     {
-        return $this->where('role', UserRoles::USER);
+        return $this->where('role', UserRoles::COMMON);
     }
 
     public function scopeAdmins()
