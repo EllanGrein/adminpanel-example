@@ -2,21 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\UserRoles;
 use App\Filament\Resources\ClaimResource\Pages;
 use App\Filament\Resources\ClaimResource\RelationManagers;
 use App\Models\Claim;
-use App\Models\User;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\CheckboxColumn;
 
 class ClaimResource extends Resource
 {
@@ -31,15 +28,13 @@ class ClaimResource extends Resource
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                TextInput::make('message')
+                Textarea::make('message')
                     ->required()
                     ->maxLength(1000),
                 Select::make('user_id')
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
-                    ->required(),
-                Checkbox::make('is_resolved')
                     ->required(),
             ]);
     }
@@ -48,7 +43,11 @@ class ClaimResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('id'),
+                TextColumn::make('title')->searchable(),
+                TextColumn::make('message')->searchable(),
+                TextColumn::make('user.name')->searchable(),
+                CheckboxColumn::make('is_resolved')->sortable()
             ])
             ->filters([
                 //
