@@ -21,4 +21,14 @@ class Claim extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeResolved()
+    {
+        return $this->where('is_resolved', true);
+    }
+
+    public function scopeNotResolved()
+    {
+        return $this->where('is_resolved', false);
+    }
 }

@@ -14,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\CheckboxColumn;
+use Filament\Tables\Filters\TernaryFilter;
 
 class ClaimResource extends Resource
 {
@@ -30,7 +31,8 @@ class ClaimResource extends Resource
                     ->maxLength(255),
                 Textarea::make('message')
                     ->required()
-                    ->maxLength(1000),
+                    ->maxLength(65535)
+                    ->columnSpan('full'),
                 Select::make('user_id')
                     ->relationship('user', 'name')
                     ->searchable()
@@ -45,12 +47,14 @@ class ClaimResource extends Resource
             ->columns([
                 TextColumn::make('id'),
                 TextColumn::make('title')->searchable(),
-                TextColumn::make('message')->searchable(),
+//                TextColumn::make('message')->searchable(),
                 TextColumn::make('user.name')->searchable(),
-                CheckboxColumn::make('is_resolved')->sortable()
+                CheckboxColumn::make('is_resolved')->sortable(),
+                TextColumn::make('created_at')
+                    ->dateTime(),
             ])
             ->filters([
-                //
+                TernaryFilter::make('is_resolved')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
